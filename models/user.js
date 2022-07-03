@@ -6,6 +6,11 @@ const UserSchema = mongoose.Schema({
     address:String,
     age:Number,
     password:String,
+    role:{
+        type:String,
+        enum:['user','admin'],
+        default:'user'
+    },
     status:Boolean,
     email:{
         type:String,

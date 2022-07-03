@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 let authenticate = require('../middleware/authentication')
+let isAdmin = require('../middleware/isAdmin')
 
 const router = express.Router();
 let User = require('../models/user.js');
@@ -12,7 +13,7 @@ router.use(
     })
 )
 
-router.get('/users',authenticate,UserController.getAll)
+router.get('/users',authenticate,isAdmin,UserController.getAll)
 
 router.post('/login',UserController.login)
 

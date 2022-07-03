@@ -18,6 +18,7 @@ const UserController = () =>{
             const status = req.body.status
             const email = req.body.email
             const password = req.body.password
+            const role = req.body.role
             const result = await UserService.create({
                 FirstName,
                 LastName,
@@ -25,7 +26,8 @@ const UserController = () =>{
                 age,
                 status,
                 email,
-                password
+                password,
+                role
             })
             return res.status(200).send({
                 data:result
@@ -42,9 +44,11 @@ const UserController = () =>{
         try{
             const email = req.body.email
             const password = req.body.password
+            const role = req.body.role
             const result = await UserService.login({
                 email,
-                password
+                password,
+                role
             })
             return res.status(200).send({
                 data:result

@@ -19,6 +19,7 @@ const UserService =()=>{
         const email =args.email;
         const address =args.address;
         const password =args.password;
+        const role =args.role;
         let hashPassword = await passwordService.hashPassword(password)
         const result = await UserRepository.create({
             FirstName,
@@ -27,6 +28,7 @@ const UserService =()=>{
             address,
             status,
             email,
+            role,
             password:hashPassword
         })
         console.log(result,'service')
@@ -36,6 +38,7 @@ const UserService =()=>{
     const login = async(args={})=>{
         const email =args.email;
         const password =args.password;
+        const role =args.role;
         let user = await UserRepository.findOne({email:email})
         // console.log(user?.password,'userpassword')
         // console.log(password,'form')
@@ -46,6 +49,7 @@ const UserService =()=>{
         let payload ={
             id:user?.id,
             email:user?.email,
+            role:user?.role
         }
         let accessTokenData = {
             payload:payload,
