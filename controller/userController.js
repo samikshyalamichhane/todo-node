@@ -4,7 +4,6 @@ const UserService = require("../service/userService")();
 const UserController = () =>{
     const getAll=async (req,res,next)=>{
         const result =await UserService.getAll(req.body)
-        console.log(result)
         return  res.status(200).send({
             data:result
         });

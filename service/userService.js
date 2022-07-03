@@ -1,11 +1,14 @@
+const constants = require("../config/constants")
+
 const passwordService = require("./passwordService")()
 
 const UserRepository = require("../repository/userRepository")()
+const tokenService = require('../service/tokenService')()
 
 const UserService =()=>{
     const getAll=async(args={})=>{
         const result = await UserRepository.getAll(args)
-        console.log(result)
+        // console.log(result)
         return result
     }
     const create = async(args={})=>{
@@ -34,16 +37,27 @@ const UserService =()=>{
         const email =args.email;
         const password =args.password;
         let user = await UserRepository.findOne({email:email})
-        console.log(user?.password,'userpassword')
-        console.log(password,'form')
+        // console.log(user?.password,'userpassword')
+        // console.log(password,'form')
         let compare = await passwordService.comparePassword(password,user?.password)
         if(!compare){
             throw new Error('password do not match')
         } 
+        let payload ={
+            id:user?.id,
+            email:user?.email,
+        }
+        let accessTokenData = {
+            payload:payload,
+            secret:constants.tokenSecret,
+            tokenLife:'15m'
+        }
+        const token = await tokenService.generateToken(accessTokenData)
         console.log('login')
         return {
             id:user?._id,
-            email: user?.email
+            email: user?.email,
+            token:token
         }
     }
     const update = async(args={})=>{
